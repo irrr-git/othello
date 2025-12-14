@@ -1,0 +1,260 @@
+:root{
+  --bg:#0b1220;
+  --text:#e8eefc;
+  --muted:#9fb0d0;
+
+  --board:#1e8a4b;
+  --board2:#197a41;
+  --line:rgba(255,255,255,.18);
+
+  --shadow: 0 10px 25px rgba(0,0,0,.35);
+  --radius:16px;
+
+  --cell-gap: clamp(6px, 1.2vw, 10px);
+  --board-max: min(94vw, 560px);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  background: radial-gradient(1200px 800px at 20% 0%, #142046 0%, var(--bg) 55%, #070b14 100%);
+  color:var(--text);
+  min-height:100svh;
+  display:flex;
+  justify-content:center;
+  padding: clamp(12px, 2vw, 22px);
+}
+
+.app{
+  width: min(760px, 100%);
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  align-items:center;
+}
+
+/* 上のバー */
+.topbar{
+  width: min(var(--board-max), 100%);
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex-wrap:wrap; /* 基本は折り返し許可（スマホでは文字を減らして1行に寄せる） */
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: var(--shadow);
+}
+
+select, button{
+  border-radius: 12px;
+  padding: 10px 12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.18);
+  color: var(--text);
+  outline:none;
+  font-weight:700;
+  letter-spacing:.2px;
+  white-space:nowrap;
+}
+
+button{
+  cursor:pointer;
+  transition: transform .05s ease, background .15s ease, border-color .15s ease;
+  background: rgba(255,255,255,.06);
+}
+button:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); }
+button:active{ transform: translateY(1px); }
+button:disabled{ opacity:.55; cursor:not-allowed; }
+
+/* メタリックボタン共通（白文字） */
+.btn-blue,
+.btn-red{
+  color:#fff;
+  font-weight: 850;
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35),
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    0 6px 14px rgba(0,0,0,.35);
+}
+
+/* 待った：メタリック青 */
+.btn-blue{
+  background: linear-gradient(180deg, #6ecbff 0%, #2f8cff 45%, #1f5fd8 100%);
+}
+.btn-blue:hover{
+  background: linear-gradient(180deg, #82d6ff 0%, #3a9bff 45%, #2a6be6 100%);
+}
+.btn-blue:active{
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,.35),
+    0 3px 8px rgba(0,0,0,.35);
+}
+
+/* リセット：メタリック赤 */
+.btn-red{
+  background: linear-gradient(180deg, #ff7b7b 0%, #e53935 45%, #b71c1c 100%);
+}
+.btn-red:hover{
+  background: linear-gradient(180deg, #ff8f8f 0%, #ef5350 45%, #c62828 100%);
+}
+.btn-red:active{
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,.35),
+    0 3px 8px rgba(0,0,0,.35);
+}
+
+/* 手番・カウント表示 */
+.chip{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+  white-space:nowrap;
+  font-weight:850;
+}
+.chip small{
+  font-weight:700;
+  color: var(--muted);
+  margin-right: 2px;
+}
+.sep{ opacity:.35; }
+
+.dot{
+  width: 12px; height: 12px; border-radius: 50%;
+  box-shadow: inset 0 2px 5px rgba(255,255,255,.22), inset 0 -3px 6px rgba(0,0,0,.28);
+}
+.dot.black{ background:#111; }
+.dot.white{ background:#e9eef7; }
+
+/* 盤面 */
+.boardWrap{
+  width: min(var(--board-max), 100%);
+  padding: 12px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: var(--shadow);
+}
+
+.board{
+  width: 100%;
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--cell-gap);
+  padding: var(--cell-gap);
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--board), var(--board2));
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 14px 30px rgba(0,0,0,.30);
+  touch-action: manipulation;
+}
+
+.cell{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,.10);
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+.cell:focus-visible{
+  outline: 3px solid rgba(88,211,255,.55);
+  outline-offset: 2px;
+}
+
+/* 石（確実に円＋大きめ） */
+.stone{
+  width: 86%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 6px 12px rgba(255,255,255,.20),
+    inset 0 -10px 16px rgba(0,0,0,.35),
+    0 10px 18px rgba(0,0,0,.28);
+  transform: translateZ(0);
+}
+.black{
+  background: radial-gradient(circle at 30% 25%, #4a4a4a 0%, #141414 55%, #050505 100%);
+}
+.white{
+  background: radial-gradient(circle at 30% 25%, #ffffff 0%, #e9eef7 55%, #b8c3d8 100%);
+}
+
+/* 候補手（半透明） */
+.hint::after{
+  content:"";
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  background: rgba(255, 235, 130, .38);
+  border: 2px solid rgba(255, 235, 130, .55);
+  box-shadow: 0 0 0 6px rgba(255, 235, 130, .10);
+  position:absolute;
+  inset:0;
+  margin:auto;
+  pointer-events:none;
+}
+
+/* パス表示（普段は非表示） */
+.toast{
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing:.2px;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .18s ease, transform .18s ease;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+.toast.show{
+  opacity:1;
+  transform: translateX(-50%) translateY(2px);
+}
+
+@media (max-width: 480px){
+  /* 「手番」「黒」「白」などのラベル文字を消す */
+  .chip small{ display:none; }
+
+  /* 区切りを少し詰める */
+  .sep{ margin: 0 -2px; }
+
+  /* ついでに横幅節約：少しだけコンパクト */
+  select, button, .chip{
+    padding: 8px 10px;
+    border-radius: 11px;
+    font-size: 14px;
+  }
+
+  .topbar{
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  /* 手番ドットも少し小さく */
+  .dot{
+    width: 10px;
+    height: 10px;
+  }
+}

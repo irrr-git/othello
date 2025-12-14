@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>6×6 オセロ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 盤面の上に1列（スマホは自然に折り返し） -->
+    <div class="topbar">
+      <select id="modeSelect" aria-label="モード">
+        <option value="friend" selected>友達</option>
+        <option value="cpu">CPU（白）</option>
+      </select>
+
+      <button id="undoBtn" class="btn-blue">待った</button>
+      <button id="resetBtn" class="btn-red">リセット</button>
+
+      <div class="chip" aria-label="手番">
+        <span class="dot black" id="turnDot" aria-hidden="true"></span>
+        <small>手番</small><span id="turnText">黒</span>
+      </div>
+
+      <div class="chip" aria-label="黒白カウント">
+        <small>黒</small><span id="blackCount">2</span>
+        <span class="sep">/</span>
+        <small>白</small><span id="whiteCount">2</span>
+      </div>
+    </div>
+
+    <!-- 盤面 -->
+    <div class="boardWrap">
+      <div id="board" class="board" role="grid" aria-label="6×6 オセロ盤"></div>
+    </div>
+  </div>
+
+  <!-- パス表示（普段は非表示） -->
+  <div id="toast" class="toast">パス</div>
+
+  <script src="main.js"></script>
+</body>
+</html>
